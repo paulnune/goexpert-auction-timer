@@ -70,20 +70,6 @@ Para executar os testes do projeto e verificar o comportamento do fechamento aut
 ```bash
 sudo make test
 ```
-### Evidência de Execução:
-```plaintext
-=== RUN   TestCloseAuctionRoutine
-=== RUN   TestCloseAuctionRoutine/close_auction_test
-{"level":"info","time":"...","message":"Starting close auction routine","auctionId":"123","closeTime":"..."}
-{"level":"info","time":"...","message":"Auction closed successfully","auctionId":"123"}
---- PASS: TestCloseAuctionRoutine/close_auction_test (2.00s)
-=== RUN   TestCloseAuctionRoutine/context_cancellation_test
-{"level":"info","time":"...","message":"Starting close auction routine","auctionId":"123","closeTime":"..."}
-{"level":"warn","time":"...","message":"Context cancelled, auction not closed","auctionId":"123"}
---- PASS: TestCloseAuctionRoutine/context_cancellation_test (2.00s)
-PASS
-```
-
 ---
 
 ## Outros Comandos Úteis 🛠️

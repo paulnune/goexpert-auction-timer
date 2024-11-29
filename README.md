@@ -27,72 +27,92 @@ Adicionar uma funcionalidade ao projeto existente para fechamento automático de
 
 ---
 
-## 🛠️ Requisitos
+## Configuração e Execução ⚙️
 
-### Linguagens e pacotes utilizados:
-- **Go**  
-  - `context`  
-  - `net/http`  
-  - `encoding/json`  
-  - `testing`  
-  - `testify`
+### 1. Configurar o Tempo de Fechamento 🕒
+No arquivo `.env`, ajuste o valor do campo `AUCTION_DURATION` para definir o tempo que um leilão permanecerá ativo antes de ser fechado automaticamente.
 
-### Infraestrutura:
-- **Docker** ou **Podman** e **Docker Compose** configurados no ambiente.
-
----
-
-## 📝 Como Rodar o Projeto
-
-### Subindo os containers:
+### 2. Iniciar os Serviços 🚀
+Execute o comando abaixo para iniciar a aplicação:
 ```bash
 make up
 ```
+Aguarde até que todos os serviços estejam completamente inicializados.
 
-### Derrubando os containers:
+---
+
+## Testando o Fechamento Automático ✅
+
+### 1. Criar um Novo Leilão 🛒
+Use o comando abaixo para criar um leilão utilizando um exemplo de requisição POST:
+```bash
+sudo make create
+```
+
+### 2. Listar Leilões Ativos 📋
+Use o comando abaixo para listar os leilões com o status ativo (status = 0):
+```bash
+sudo make list
+```
+O campo status dos leilões retornados será 0, indicando que estão ativos.
+
+### 3. Verificar o Fechamento 🔐
+Aguarde o tempo configurado em `AUCTION_DURATION` no `.env`. Após o período, use o comando abaixo para verificar os leilões fechados:
+```bash
+sudo make check
+```
+Agora, o campo status dos leilões será 1, indicando que foram fechados automaticamente.
+
+---
+
+## Rodar os Testes Automatizados 🧪
+Para executar os testes do projeto e verificar o comportamento do fechamento automático, use o comando:
+```bash
+sudo make test
+```
+### Evidência de Execução:
+```plaintext
+=== RUN   TestCloseAuctionRoutine
+=== RUN   TestCloseAuctionRoutine/close_auction_test
+{"level":"info","time":"...","message":"Starting close auction routine","auctionId":"123","closeTime":"..."}
+{"level":"info","time":"...","message":"Auction closed successfully","auctionId":"123"}
+--- PASS: TestCloseAuctionRoutine/close_auction_test (2.00s)
+=== RUN   TestCloseAuctionRoutine/context_cancellation_test
+{"level":"info","time":"...","message":"Starting close auction routine","auctionId":"123","closeTime":"..."}
+{"level":"warn","time":"...","message":"Context cancelled, auction not closed","auctionId":"123"}
+--- PASS: TestCloseAuctionRoutine/context_cancellation_test (2.00s)
+PASS
+```
+
+---
+
+## Outros Comandos Úteis 🛠️
+
+### Derrubar os Contêineres ⬇️
 ```bash
 make down
 ```
 
----
-
-## ✅ Testes Automatizados
-
-### Propósito
-Os testes têm como objetivo validar:
-1. A criação de leilões com tempos pré-configurados.
-2. O fechamento automático de leilões após o tempo definido.
-3. A interação correta entre entidades e bancos de dados.
-
-### Como Executar os Testes
-1. Para rodar todos os testes:
-   ```bash
-   make test
-   ```
-
-2. Para gerar um relatório de cobertura:
-   ```bash
-   make coverage
-   ```
-
-3. Para visualizar a cobertura em HTML:
-   Após rodar `make coverage`, o relatório estará disponível em `/tmp/cover*/coverage.html`. Abra o arquivo no navegador.
-
-### Evidências de Cobertura
-Exemplo de saída ao executar `make coverage`:
-```
-github.com/user/project/internal/entity/auction_entity  coverage: 85.0% of statements
-github.com/user/project/internal/usecase/auction_usecase  coverage: 92.0% of statements
+### Limpar Contêineres, Imagens e Volumes 🧹
+Use o comando abaixo para remover todos os contêineres, imagens e volumes não utilizados, além de limpar o sistema:
+```bash
+make clear
 ```
 
-Resultado esperado: uma cobertura mínima de 80% nos módulos principais.
+### Executar Tudo em Sequência ⚙️
+Para rodar toda a sequência de comandos (clear, up, create, list, check, test), use:
+```bash
+make all
+```
 
 ---
 
-## 📦 Estrutura do Projeto
+## Estrutura do Projeto 📂
 
 ```
 .
+├── api
+│   └── api.http
 ├── cmd
 │   └── auction
 │       └── main.go
@@ -133,6 +153,7 @@ Resultado esperado: uma cobertura mínima de 80% nos módulos principais.
 │   │   └── database
 │   │       ├── auction
 │   │       │   ├── create_auction.go
+│   │       │   ├── create_auction_test.go
 │   │       │   └── find_auction.go
 │   │       ├── bid
 │   │       │   ├── create_bid.go

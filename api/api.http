@@ -1,0 +1,19 @@
+POST http://localhost:8080/auction HTTP/1.1
+Content-Type: application/json
+
+{
+  "product_name": "celular",
+  "category": "eletronicos",
+  "description": "Iphone 1 8GB",
+  "condition": 0
+}
+
+###
+
+GET http://localhost:8080/auction?status=0 HTTP/1.1
+
+###
+
+GET http://localhost:8080/auction?status=1 HTTP/1.1
+
+###

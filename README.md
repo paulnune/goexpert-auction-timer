@@ -54,11 +54,6 @@ make up
 make down
 ```
 
-### Fazendo uma requisição:
-```bash
-make run
-```
-
 ---
 
 ## ✅ Testes Automatizados
